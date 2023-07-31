@@ -37,6 +37,7 @@ public class CreditServiceImpl implements CreditService {
         BigDecimal psk = creditParametersCalculationService.calculateTotalAmountFromPaymentSchedule(paymentScheduleElementList);
 
         log.info("The loan is formed: PSK = {}, Monthly payment = {}, Rate = {}", psk, monthlyPayment, rate);
+
         return CreditDTO.builder()
                 .amount(scoringDataDTO.getAmount())
                 .term(scoringDataDTO.getTerm())

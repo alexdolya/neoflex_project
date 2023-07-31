@@ -1,5 +1,6 @@
 package ru.dolya.neoflex_project.service;
 
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import ru.dolya.neoflex_project.dto.ScoringDataDTO;
 import ru.dolya.neoflex_project.exception.ScoringException;
@@ -7,7 +8,7 @@ import ru.dolya.neoflex_project.exception.ScoringException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Period;
-
+@Log4j2
 @Service
 public class ScoringServiceImpl implements ScoringService {
 
@@ -91,6 +92,7 @@ public class ScoringServiceImpl implements ScoringService {
                 break;
         }
 
+        log.debug("Scoring completed. Rate = {}", rate);
 
         return rate;
     }

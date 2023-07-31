@@ -1,5 +1,6 @@
 package ru.dolya.neoflex_project.dto;
 
+
 import lombok.Builder;
 import lombok.Data;
 import ru.dolya.neoflex_project.dto.enums.EmploymentStatus;
