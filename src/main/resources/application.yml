@@ -1,0 +1,5 @@
+creditRules:
+  baseRate : 20
+  insuranceAmount : 20000
+  insuranceDiscount : 3
+  salaryClientDiscount : 1
