@@ -3,11 +3,8 @@ package ru.dolya.conveyor.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -20,17 +17,16 @@ import ru.dolya.conveyor.dto.enums.EmploymentStatus;
 import ru.dolya.conveyor.dto.enums.Gender;
 import ru.dolya.conveyor.dto.enums.MaritalStatus;
 import ru.dolya.conveyor.dto.enums.Position;
-import ru.dolya.conveyor.manager.impl.CreditParametersCalculationManagerImpl;
 import ru.dolya.conveyor.manager.CreditRulesManager;
 import ru.dolya.conveyor.manager.ScoringManager;
-import ru.dolya.conveyor.service.impl.CreditServiceImpl;
+import ru.dolya.conveyor.manager.impl.CreditParametersCalculationManagerImpl;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
