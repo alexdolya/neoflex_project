@@ -1,7 +1,6 @@
 package ru.dolya.conveyor.manager.impl;
 
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import ru.dolya.conveyor.config.ConfigCreditRules;
 import ru.dolya.conveyor.manager.CreditRulesManager;
 

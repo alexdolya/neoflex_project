@@ -1,12 +1,11 @@
 package ru.dolya.conveyor.manager.impl;
 
+import ru.dolya.conveyor.manager.ScoringManager;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import ru.dolya.conveyor.dto.ScoringDataDTO;
 import ru.dolya.conveyor.exception.ScoringException;
 import ru.dolya.conveyor.manager.CreditRulesManager;
-import ru.dolya.conveyor.manager.ScoringManager;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

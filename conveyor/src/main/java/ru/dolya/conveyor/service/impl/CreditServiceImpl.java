@@ -1,13 +1,13 @@
 package ru.dolya.conveyor.service.impl;
 
+import ru.dolya.conveyor.manager.CreditRulesManager;
+import ru.dolya.conveyor.manager.ScoringManager;
+import ru.dolya.conveyor.manager.impl.CreditParametersCalculationManagerImpl;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import ru.dolya.conveyor.dto.CreditDTO;
 import ru.dolya.conveyor.dto.PaymentScheduleElement;
 import ru.dolya.conveyor.dto.ScoringDataDTO;
-import ru.dolya.conveyor.manager.impl.CreditParametersCalculationManagerImpl;
-import ru.dolya.conveyor.manager.CreditRulesManager;
-import ru.dolya.conveyor.manager.ScoringManager;
 import ru.dolya.conveyor.service.CreditService;
 
 import java.math.BigDecimal;

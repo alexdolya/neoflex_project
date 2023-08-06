@@ -1,10 +1,10 @@
 package ru.dolya.conveyor.dto;
 
 
+import ru.dolya.conveyor.dto.enums.Position;
 import lombok.Builder;
 import lombok.Data;
 import ru.dolya.conveyor.dto.enums.EmploymentStatus;
-import ru.dolya.conveyor.dto.enums.Position;
 
 import java.math.BigDecimal;
 
