@@ -1,10 +1,11 @@
-package ru.dolya.conveyor.dto;
+package ru.dolya.deal.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import ru.dolya.conveyor.dto.enums.Gender;
-import ru.dolya.conveyor.dto.enums.MartialStatus;
+import ru.dolya.deal.domain.enums.Gender;
+import ru.dolya.deal.domain.enums.MartialStatus;
+
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -31,5 +32,4 @@ public class ScoringDataDTO {
     private String account;
     private Boolean isInsuranceEnabled;
     private Boolean isSalaryClient;
-
 }

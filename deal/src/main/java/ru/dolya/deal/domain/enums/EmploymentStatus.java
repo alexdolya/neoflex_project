@@ -1,5 +1,4 @@
-package ru.dolya.conveyor.dto.enums;
-
+package ru.dolya.deal.domain.enums;
 
 public enum EmploymentStatus {
     UNEMPLOYED,
@@ -7,4 +6,3 @@ public enum EmploymentStatus {
     EMPLOYED,
     BUSINESS_OWNER
 }
-

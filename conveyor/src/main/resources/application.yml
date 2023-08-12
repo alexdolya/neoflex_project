@@ -3,3 +3,6 @@ creditRules:
   insuranceAmount : 20000
   insuranceDiscount : 3
   salaryClientDiscount : 1
+
+server:
+  port: 8080

@@ -38,7 +38,7 @@ public class ScoringManagerImpl implements ScoringManager {
         }
 
         if (scoringDataDTO.getAmount().compareTo(scoringDataDTO.getEmployment().getSalary().multiply(BigDecimal.valueOf(20))) > 0) {
-            throw new ScoringException(new Throwable("Reject - the requested amount is less than 20 salaries"));
+            throw new ScoringException(new Throwable("Reject - the requested amount is more than 20 salaries"));
         }
 
         int age = Period.between(scoringDataDTO.getBirthdate(), LocalDate.now()).getYears();
@@ -56,7 +56,7 @@ public class ScoringManagerImpl implements ScoringManager {
         }
 
         switch (scoringDataDTO.getEmployment().getPosition()) {
-            case MIDDLE_MANAGER:
+            case MID_MANAGER:
                 rate = rate.subtract(BigDecimal.valueOf(2));
                 break;
             case TOP_MANAGER:
@@ -64,7 +64,7 @@ public class ScoringManagerImpl implements ScoringManager {
                 break;
         }
 
-        switch (scoringDataDTO.getMaritalStatus()) {
+        switch (scoringDataDTO.getMartialStatus()) {
             case MARRIED:
                 rate = rate.subtract(BigDecimal.valueOf(3));
                 break;

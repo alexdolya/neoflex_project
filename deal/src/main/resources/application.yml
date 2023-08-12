@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/dealDB
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+#  cloud:
+#    openfeign:
+#      client:
+#        config:
+#          conveyorCalculation:
+#            url: http://localhost:8080/conveyor/calculation
+#          conveyorOffers:
+#            url: http://localhost:8080/conveyor/offers
+
+
+server:
+  port: 8081
+

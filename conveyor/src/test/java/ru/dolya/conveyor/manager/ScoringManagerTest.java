@@ -12,7 +12,7 @@ import ru.dolya.conveyor.dto.EmploymentDTO;
 import ru.dolya.conveyor.dto.ScoringDataDTO;
 import ru.dolya.conveyor.dto.enums.EmploymentStatus;
 import ru.dolya.conveyor.dto.enums.Gender;
-import ru.dolya.conveyor.dto.enums.MaritalStatus;
+import ru.dolya.conveyor.dto.enums.MartialStatus;
 import ru.dolya.conveyor.dto.enums.Position;
 import ru.dolya.conveyor.exception.ScoringException;
 
@@ -43,12 +43,12 @@ class ScoringManagerTest {
                 .birthdate(LocalDate.of(1990, 1, 1))
                 .passportSeries("1234")
                 .passportNumber("123456")
-                .maritalStatus(MaritalStatus.MARRIED)
+                .martialStatus(MartialStatus.MARRIED)
                 .dependentAmount(1)
                 .employment(EmploymentDTO.builder()
                         .employmentStatus(EmploymentStatus.SELF_EMPLOYED)
                         .salary(BigDecimal.valueOf(60000))
-                        .position(Position.MIDDLE_MANAGER)
+                        .position(Position.MID_MANAGER)
                         .workExperienceTotal(24)
                         .workExperienceCurrent(12)
                         .build())
@@ -69,7 +69,7 @@ class ScoringManagerTest {
         scoringDataDTO.getEmployment().setPosition(Position.TOP_MANAGER);
         assertEquals(BigDecimal.valueOf(13), scoringManager.calculateRate(scoringDataDTO));
 
-        scoringDataDTO.setMaritalStatus(MaritalStatus.DIVORCED);
+        scoringDataDTO.setMartialStatus(MartialStatus.DIVORCED);
         assertEquals(BigDecimal.valueOf(17), scoringManager.calculateRate(scoringDataDTO));
 
         scoringDataDTO.setDependentAmount(5);

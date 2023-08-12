@@ -1,6 +1,6 @@
 package ru.dolya.conveyor.dto.enums;
 
-public enum MaritalStatus {
+public enum MartialStatus {
     MARRIED,
     DIVORCED
 }
