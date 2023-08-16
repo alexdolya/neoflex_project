@@ -1,8 +1,6 @@
 package ru.dolya.deal.service;
 
-import ru.dolya.deal.dto.LoanOfferDTO;
-
-import java.util.List;
+import ru.dolya.deal.model.dto.LoanOfferDTO;
 
 public interface OfferService {
     void getOffer(LoanOfferDTO loanOfferDTO);

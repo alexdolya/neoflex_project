@@ -1,16 +1,20 @@
 package ru.dolya.deal.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.dolya.deal.client.CreditConveyorCalculateApi;
-import ru.dolya.deal.domain.*;
-import ru.dolya.deal.domain.enums.ApplicationStatus;
-import ru.dolya.deal.domain.enums.ChangeType;
-import ru.dolya.deal.domain.enums.CreditStatus;
-import ru.dolya.deal.dto.CreditDTO;
-import ru.dolya.deal.dto.FinishRegistrationRequestDTO;
-import ru.dolya.deal.dto.ScoringDataDTO;
+import ru.dolya.deal.client.CreditConveyorApi;
+import ru.dolya.deal.mapper.EmploymentMapper;
+import ru.dolya.deal.mapper.ScoringDataMapper;
+import ru.dolya.deal.model.domain.*;
+import ru.dolya.deal.model.domain.enums.ApplicationStatus;
+import ru.dolya.deal.model.domain.enums.ChangeType;
+import ru.dolya.deal.model.domain.enums.CreditStatus;
+import ru.dolya.deal.model.dto.CreditDTO;
+import ru.dolya.deal.model.dto.FinishRegistrationRequestDTO;
+import ru.dolya.deal.model.dto.PassportDTO;
+import ru.dolya.deal.model.dto.ScoringDataDTO;
 import ru.dolya.deal.repository.ApplicationRepository;
 import ru.dolya.deal.service.CalculateByIdService;
 
@@ -18,11 +22,15 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@Log4j2
 @RequiredArgsConstructor
 public class CalculateByIdServiceImpl implements CalculateByIdService {
 
     private final ApplicationRepository applicationRepository;
-    private final CreditConveyorCalculateApi creditConveyorCalculateApi;
+    private final CreditConveyorApi creditConveyorApi;
+    private final EmploymentMapper employmentMapper;
+    private final ScoringDataMapper scoringDataMapper;
+
 
     @Transactional
     @Override
@@ -30,39 +38,18 @@ public class CalculateByIdServiceImpl implements CalculateByIdService {
 
         Application application = applicationRepository.findById(applicationId).orElseThrow();
 
-        Client client = application.getClient();
+        log.info("Successful load application with ID: {} from database", applicationId);
 
-        Employment employment = Employment.builder()
-                .status(requestDTO.getEmployment().getEmploymentStatus())
-                .employerInn(requestDTO.getEmployment().getEmployerINN())
-                .salary(requestDTO.getEmployment().getSalary())
-                .position(requestDTO.getEmployment().getPosition())
-                .workExperienceTotal(requestDTO.getEmployment().getWorkExperienceTotal())
-                .workExperienceCurrent(requestDTO.getEmployment().getWorkExperienceCurrent())
-                .build();
+        Employment employment = employmentMapper.getEmploymentFromRequestDTO(requestDTO);
 
-        ScoringDataDTO scoringDataDTO = ScoringDataDTO.builder()
-                .amount(application.getCredit().getAmount())
-                .term(application.getCredit().getTerm())
-                .firstName(client.getFirstName())
-                .lastName(client.getLastName())
-                .middleName(client.getMiddleName())
-                .gender(requestDTO.getGender())
-                .birthdate(client.getBirthDate())
-                .passportSeries(client.getPassport().getSeries())
-                .passportNumber(client.getPassport().getNumber())
-                .passportIssueDate(requestDTO.getPassportIssueDate())
-                .passportIssueBranch(requestDTO.getPassportIssueBranch())
-                .martialStatus(requestDTO.getMartialStatus())
-                .dependentAmount(requestDTO.getDependentAmount())
-                .employment(requestDTO.getEmployment())
-                .account(requestDTO.getAccount())
-                .isInsuranceEnabled(application.getCredit().isInsuranceEnabled())
-                .isSalaryClient(application.getCredit().isSalaryClient())
-                .build();
+        ScoringDataDTO scoringDataDTO = scoringDataMapper.getScoringDataDTOFromApplication(application, requestDTO);
 
+        CreditDTO creditDTO = creditConveyorApi.calculate(scoringDataDTO);
 
-        CreditDTO creditDTO = creditConveyorCalculateApi.calculate(scoringDataDTO);
+        log.info("calculated loan with the following parameters: amount = {}, PSK = {}, monthly payment = {}",
+                creditDTO.getAmount(),
+                creditDTO.getPsk(),
+                creditDTO.getMonthlyPayment());
 
         List<StatusHistory> statusHistoryList = application.getStatusHistory();
         statusHistoryList.add(StatusHistory.builder()
@@ -85,10 +72,12 @@ public class CalculateByIdServiceImpl implements CalculateByIdService {
         application.getClient().setDependentAmount(requestDTO.getDependentAmount());
         application.getClient().setAccount(requestDTO.getAccount());
         application.getClient().setEmployment(employment);
-        application.getClient().getPassport().setIssueBranch(requestDTO.getPassportIssueBranch());
-        application.getClient().getPassport().setIssueDate(requestDTO.getPassportIssueDate());
+        application.getClient().getPassport().getPassportDTO().setIssueBranch(requestDTO.getPassportIssueBranch());
+        application.getClient().getPassport().getPassportDTO().setIssueDate(requestDTO.getPassportIssueDate());
         application.setStatus(ApplicationStatus.CC_APPROVED);
         application.setStatusHistory(statusHistoryList);
+
+        log.info("Set application status to CC_APPROVED");
 
         applicationRepository.save(application);
     }

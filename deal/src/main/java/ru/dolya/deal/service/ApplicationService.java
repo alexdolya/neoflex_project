@@ -1,7 +1,7 @@
 package ru.dolya.deal.service;
 
-import ru.dolya.deal.dto.LoanApplicationRequestDTO;
-import ru.dolya.deal.dto.LoanOfferDTO;
+import ru.dolya.deal.model.dto.LoanApplicationRequestDTO;
+import ru.dolya.deal.model.dto.LoanOfferDTO;
 
 import java.util.List;
 

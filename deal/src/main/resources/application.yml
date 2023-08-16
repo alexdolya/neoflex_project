@@ -8,16 +8,9 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update
-#  cloud:
-#    openfeign:
-#      client:
-#        config:
-#          conveyorCalculation:
-#            url: http://localhost:8080/conveyor/calculation
-#          conveyorOffers:
-#            url: http://localhost:8080/conveyor/offers
-
-
 server:
   port: 8081
 
+feign:
+  client:
+    server: http://localhost:8080/conveyor
