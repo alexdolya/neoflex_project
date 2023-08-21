@@ -7,10 +7,16 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
+
+  liquibase:
+    change-log: liquibase/changelog.yml
+
 server:
   port: 8081
 
 feign:
   client:
     server: http://localhost:8080/conveyor
+
+

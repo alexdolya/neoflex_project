@@ -33,7 +33,7 @@ public class ConveyorController {
         this.creditService = creditService;
     }
 
-    @Operation(summary = "Calculate 4 credit offers based on prescoring")
+    @Operation(summary = "Calculate 4 credit offers")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation"),
             @ApiResponse(responseCode = "500", description = "Wrong input parameter")

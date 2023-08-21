@@ -1,5 +1,6 @@
 package ru.dolya.conveyor.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import ru.dolya.conveyor.manager.CreditRulesManager;
 import ru.dolya.conveyor.manager.PreScoringManager;
 import ru.dolya.conveyor.manager.impl.CreditParametersCalculationManagerImpl;
@@ -17,18 +18,12 @@ import java.util.List;
 
 @Log4j2
 @Service
+@RequiredArgsConstructor
 public class OfferServiceImpl implements OfferService {
 
-    private final PreScoringManager preScoringService;
+
     private final CreditRulesManager creditRulesManager;
-
     private final CreditParametersCalculationManagerImpl creditParametersCalculationService;
-
-    public OfferServiceImpl(PreScoringManager preScoringService, CreditRulesManager creditRulesManager, CreditParametersCalculationManagerImpl creditParametersCalculationService) {
-        this.preScoringService = preScoringService;
-        this.creditRulesManager = creditRulesManager;
-        this.creditParametersCalculationService = creditParametersCalculationService;
-    }
 
     public List<LoanOfferDTO> getOffers(LoanApplicationRequestDTO requestDTO) {
         log.info("Request credit offer: {} {} - amount = {}, term = {}, email = {}",
@@ -40,12 +35,11 @@ public class OfferServiceImpl implements OfferService {
 
         List<LoanOfferDTO> loanOfferDTOList = new ArrayList<>();
 
-        if (preScoringService.preScoring(requestDTO)) {
             loanOfferDTOList.add(getOffer(false, false, requestDTO));
             loanOfferDTOList.add(getOffer(false, true, requestDTO));
             loanOfferDTOList.add(getOffer(true, false, requestDTO));
             loanOfferDTOList.add(getOffer(true, true, requestDTO));
-        }
+
 
         log.info("4 loan offers successfully generated");
         return loanOfferDTOList;
