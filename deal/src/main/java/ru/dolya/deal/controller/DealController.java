@@ -25,14 +25,14 @@ public class DealController {
     @Operation(summary = "Calculate 4 credit offers from MS Conveyor")
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/application")
-    public List<LoanOfferDTO> getOffers(@RequestBody LoanApplicationRequestDTO requestDTO) {
+    public List<LoanOfferDTO> postOffersRequest(@RequestBody LoanApplicationRequestDTO requestDTO) {
         return applicationService.getOffers(requestDTO);
     }
 
     @Operation(summary = "Refresh application from LoanOfferDTO parameters and save to DB")
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/offer")
-    public void getOffer(@RequestBody LoanOfferDTO loanOfferDTO) {
+    public void putOffer(@RequestBody LoanOfferDTO loanOfferDTO) {
         offerService.getOffer(loanOfferDTO);
     }
 

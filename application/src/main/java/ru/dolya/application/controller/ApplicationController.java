@@ -21,7 +21,7 @@ public class ApplicationController {
 
     @Operation(summary = "Pre-score input data and returning 4 loan offers")    @ResponseStatus(HttpStatus.OK)
     @PostMapping()
-    public List<LoanOfferDTO> getOffers(@RequestBody LoanApplicationRequestDTO requestDTO) {
+    public List<LoanOfferDTO> postOffersRequest(@RequestBody LoanApplicationRequestDTO requestDTO) {
         return applicationService.getOffers(requestDTO);
     }
 

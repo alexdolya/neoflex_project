@@ -43,7 +43,7 @@ class ApplicationControllerTest {
     private OfferService offerService;
 
     @Test
-    void getOffers() throws Exception {
+    void postOffersRequest() throws Exception {
 
         List<LoanOfferDTO> loanOffers = new ArrayList<>();
         loanOffers.add(LoanOfferDTO.builder()

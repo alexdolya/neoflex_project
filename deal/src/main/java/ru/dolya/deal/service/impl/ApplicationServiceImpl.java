@@ -5,6 +5,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.dolya.deal.client.CreditConveyorApi;
+import ru.dolya.deal.exception.FeignClientCustomException;
 import ru.dolya.deal.mapper.ClientMapper;
 import ru.dolya.deal.model.domain.Application;
 import ru.dolya.deal.model.domain.Client;
@@ -67,9 +68,17 @@ public class ApplicationServiceImpl implements ApplicationService {
         log.info("Save to database with ID: {}", appID);
 
 
-        return creditConveyorApi.getOffers(requestDTO).stream()
-                .peek(offer -> offer.setApplicationId(appID))
-                .collect(Collectors.toList());
+        List<LoanOfferDTO> loanOfferDTOList;
+
+        try {
+            loanOfferDTOList = creditConveyorApi.getOffers(requestDTO).stream()
+                    .peek(offer -> offer.setApplicationId(appID))
+                    .collect(Collectors.toList());
+        } catch (Exception ex) {
+            throw new FeignClientCustomException(new Throwable(ex.getMessage()));
+        }
+
+        return loanOfferDTOList;
     }
 
 }

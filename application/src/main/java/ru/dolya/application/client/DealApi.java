@@ -14,10 +14,10 @@ import java.util.List;
 public interface DealApi {
 
     @PostMapping("/application")
-    List<LoanOfferDTO> getOffers(@RequestBody LoanApplicationRequestDTO requestDTO);
+    List<LoanOfferDTO> postOffersRequest(@RequestBody LoanApplicationRequestDTO requestDTO);
 
     @PutMapping("/offer")
-    void getOffer(@RequestBody LoanOfferDTO loanOfferDTO);
+    void putOffer(@RequestBody LoanOfferDTO loanOfferDTO);
 }
 
 

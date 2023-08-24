@@ -5,6 +5,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.dolya.deal.client.CreditConveyorApi;
+import ru.dolya.deal.exception.FeignClientCustomException;
 import ru.dolya.deal.mapper.EmploymentMapper;
 import ru.dolya.deal.mapper.ScoringDataMapper;
 import ru.dolya.deal.model.domain.*;
@@ -44,7 +45,13 @@ public class CalculateByIdServiceImpl implements CalculateByIdService {
 
         ScoringDataDTO scoringDataDTO = scoringDataMapper.getScoringDataDTOFromApplication(application, requestDTO);
 
-        CreditDTO creditDTO = creditConveyorApi.calculate(scoringDataDTO);
+        CreditDTO creditDTO;
+
+        try {
+            creditDTO = creditConveyorApi.calculate(scoringDataDTO);
+        } catch (Exception ex){
+            throw new FeignClientCustomException(new Throwable(ex.getMessage()));
+        }
 
         log.info("calculated loan with the following parameters: amount = {}, PSK = {}, monthly payment = {}",
                 creditDTO.getAmount(),
