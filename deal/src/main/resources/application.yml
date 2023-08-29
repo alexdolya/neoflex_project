@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/dealDB
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: validate
+
+  liquibase:
+    change-log: liquibase/changelog.yml
+
+server:
+  port: 8081
+
+feign:
+  client:
+    server: http://localhost:8080/conveyor
+
+

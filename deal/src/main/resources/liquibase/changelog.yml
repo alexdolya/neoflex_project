@@ -1,0 +1,156 @@
+databaseChangeLog:
+  - changeSet:
+      id: initial_DB
+      author: Alex_Dolya
+      changes:
+        - createTable:
+            tableName: passport
+            columns:
+              - column:
+                  name: passport_id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: passport
+                  type: jsonb
+        - createTable:
+            tableName: employment
+            columns:
+              - column:
+                  name: employment_id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: employment
+                  type: jsonb
+        - createTable:
+            tableName: client
+            columns:
+              - column:
+                  name: client_id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: last_name
+                  type: varchar(100)
+              - column:
+                  name: first_name
+                  type: varchar(100)
+              - column:
+                  name: middle_name
+                  type: varchar(100)
+              - column:
+                  name: birth_date
+                  type: date
+              - column:
+                  name: email
+                  type: varchar(100)
+                  constraints:
+                    unique: true
+              - column:
+                  name: gender
+                  type: varchar
+              - column:
+                  name: martial_status
+                  type: varchar
+              - column:
+                  name: dependent_amount
+                  type: int
+              - column:
+                  name: passport_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: fk_passport
+                    references: passport(passport_id)
+                    onDelete: cascade
+              - column:
+                  name: employment_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: fk_employment
+                    references: employment(employment_id)
+                    onDelete: cascade
+              - column:
+                  name: account
+                  type: varchar
+        - createTable:
+            tableName: credit
+            columns:
+              - column:
+                  name: credit_id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: amount
+                  type: decimal
+              - column:
+                  name: term
+                  type: integer
+              - column:
+                  name: monthly_payment
+                  type: decimal
+              - column:
+                  name: rate
+                  type: decimal
+              - column:
+                  name: psk
+                  type: decimal
+              - column:
+                  name: payment_schedule
+                  type: jsonb
+              - column:
+                  name: insurance_enabled
+                  type: boolean
+              - column:
+                  name: salary_client
+                  type: boolean
+              - column:
+                  name: credit_status
+                  type: varchar
+        - createTable:
+            tableName: application
+            columns:
+              - column:
+                  name: application_id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: client_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: fk_client
+                    references: client(client_id)
+              - column:
+                  name: credit_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: fk_credit
+                    references: credit(credit_id)
+              - column:
+                  name: status
+                  type: varchar
+              - column:
+                  name: creation_date
+                  type: date
+              - column:
+                  name: applied_offer
+                  type: jsonb
+              - column:
+                  name: sign_date
+                  type: timestamp
+              - column:
+                  name: ses_code
+                  type: uuid
+              - column:
+                  name: status_history
+                  type: jsonb
