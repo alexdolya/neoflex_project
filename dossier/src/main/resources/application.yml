@@ -1,0 +1,19 @@
+
+
+spring:
+  kafka:
+    consumer:
+      group-id: "neoflex-group"
+      bootstrap-servers: "localhost:9092"
+      client-id: "neoflex-consumer"
+      properties:
+        spring.json.trusted.packages: "ru.dolya.dossier.*"
+
+
+
+server:
+  port: 8083
+
+
+
+

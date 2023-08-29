@@ -10,7 +10,9 @@ import ru.dolya.deal.model.domain.Credit;
 import ru.dolya.deal.model.domain.StatusHistory;
 import ru.dolya.deal.model.domain.enums.ApplicationStatus;
 import ru.dolya.deal.model.domain.enums.ChangeType;
+import ru.dolya.deal.model.dto.EmailMessage;
 import ru.dolya.deal.model.dto.LoanOfferDTO;
+import ru.dolya.deal.model.dto.Theme;
 import ru.dolya.deal.repository.ApplicationRepository;
 import ru.dolya.deal.service.OfferService;
 
@@ -25,6 +27,8 @@ public class OfferServiceImpl implements OfferService {
 
     private final ApplicationRepository applicationRepository;
     private final CreditMapper creditMapper;
+
+    private final KafkaProducerService kafkaProducerService;
 
     @Transactional
     @Override
@@ -59,6 +63,9 @@ public class OfferServiceImpl implements OfferService {
 
         applicationRepository.save(application);
 
+        EmailMessage emailMessage = new EmailMessage().setAddress("ivan@ma").setTheme(Theme.FINISH_REGISTRATION).setApplicationId(1L);
+        kafkaProducerService.send(emailMessage);
+        log.info("Email message send by KAFKA : {}", emailMessage);
         log.info("Save application to database");
 
     }

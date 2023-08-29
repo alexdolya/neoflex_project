@@ -8,7 +8,10 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: validate
-
+  kafka:
+    producer:
+      bootstrap-servers: "127.0.0.1:9092"
+      client-id: "neoflex-producer"
   liquibase:
     change-log: liquibase/changelog.yml
 
