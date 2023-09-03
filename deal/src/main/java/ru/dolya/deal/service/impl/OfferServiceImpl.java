@@ -60,14 +60,15 @@ public class OfferServiceImpl implements OfferService {
         application.setStatusHistory(statusHistory);
         application.setCredit(credit);
         application.setAppliedOffer(loanOfferDTO);
-
+        EmailMessage emailMessage = new EmailMessage()
+                .setApplicationId(application.getApplicationId())
+                .setAddress(application.getClient().getEmail())
+                .setTheme(Theme.FINISH_REGISTRATION);
         applicationRepository.save(application);
-
-        EmailMessage emailMessage = new EmailMessage().setAddress("ivan@ma").setTheme(Theme.FINISH_REGISTRATION).setApplicationId(1L);
-        kafkaProducerService.send(emailMessage);
-        log.info("Email message send by KAFKA : {}", emailMessage);
         log.info("Save application to database");
 
+        kafkaProducerService.send("finish-registration", emailMessage);
+        log.info("Send email message : {} to finish-registration topic", emailMessage);
     }
 }
 

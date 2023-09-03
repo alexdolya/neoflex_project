@@ -53,7 +53,7 @@ public class Application {
     private LocalDateTime signDate;
 
     @Column(name = "ses_code")
-    private UUID sesCode;
+    private Integer sesCode;
 
     @Column(name = "status_history")
     @Type(type = "jsonb")

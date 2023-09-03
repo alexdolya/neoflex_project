@@ -12,10 +12,7 @@ import ru.dolya.deal.model.domain.*;
 import ru.dolya.deal.model.domain.enums.ApplicationStatus;
 import ru.dolya.deal.model.domain.enums.ChangeType;
 import ru.dolya.deal.model.domain.enums.CreditStatus;
-import ru.dolya.deal.model.dto.CreditDTO;
-import ru.dolya.deal.model.dto.FinishRegistrationRequestDTO;
-import ru.dolya.deal.model.dto.PassportDTO;
-import ru.dolya.deal.model.dto.ScoringDataDTO;
+import ru.dolya.deal.model.dto.*;
 import ru.dolya.deal.repository.ApplicationRepository;
 import ru.dolya.deal.service.CalculateByIdService;
 
@@ -31,6 +28,7 @@ public class CalculateByIdServiceImpl implements CalculateByIdService {
     private final CreditConveyorApi creditConveyorApi;
     private final EmploymentMapper employmentMapper;
     private final ScoringDataMapper scoringDataMapper;
+    private final KafkaProducerService kafkaProducerService;
 
 
     @Transactional
@@ -49,7 +47,7 @@ public class CalculateByIdServiceImpl implements CalculateByIdService {
 
         try {
             creditDTO = creditConveyorApi.calculate(scoringDataDTO);
-        } catch (Exception ex){
+        } catch (Exception ex) {
             throw new FeignClientCustomException(new Throwable(ex.getMessage()));
         }
 
@@ -86,6 +84,15 @@ public class CalculateByIdServiceImpl implements CalculateByIdService {
 
         log.info("Set application status to CC_APPROVED");
 
+        EmailMessage emailMessage = new EmailMessage()
+                .setApplicationId(application.getApplicationId())
+                .setTheme(Theme.CREATE_DOCUMENT)
+                .setAddress(application.getClient().getEmail());
+
         applicationRepository.save(application);
+
+        kafkaProducerService.send("create-documents", emailMessage);
+        log.info("Send email message : {} to create-documents topic", emailMessage);
+
     }
 }

@@ -18,24 +18,21 @@ public class KafkaProducerService {
     @Autowired
     private KafkaTemplate<String, EmailMessage> kafkaTemplate;
 
-    public void send(EmailMessage message) {
+    public void send(String topic, EmailMessage message) {
         try {
-            log.info("value:{}", message);
-            kafkaTemplate.send("finish-registration", message)
+            kafkaTemplate.send(topic, message)
                     .completable()
                     .whenComplete(
                             (result, ex) -> {
                                 if (ex == null) {
-                                    log.info(
-                                            "message id:{} was sent, offset:{}",
-                                            message,
-                                            result.getRecordMetadata().offset());
+                                    log.info("Message :{} was sent.", message);
+
                                 } else {
-                                    log.error("message id:{} was not sent", message, ex);
+                                    log.error("Message :{} was not sent", message, ex);
                                 }
                             });
         } catch (Exception ex) {
-            log.error("send error, value:{}", message, ex);
+            log.error("Send error, message: {}", message, ex);
         }
     }
 }

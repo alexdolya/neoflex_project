@@ -51,7 +51,6 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         Application application = Application.builder()
                 .client(client)
-                .sesCode(UUID.randomUUID())
                 .creationDate(LocalDate.now())
                 .status(ApplicationStatus.PREAPPROVAL)
                 .statusHistory(List.of(StatusHistory.builder()
