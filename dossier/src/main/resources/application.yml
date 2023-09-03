@@ -1,19 +1,26 @@
-
-
 spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: example@gmail.com
+    password: "aaaaaaa"
+    properties.mail.smtp:
+      auth: true
+      starttls.enable: true
+    test-connection: true
   kafka:
     consumer:
       group-id: "neoflex-group"
-      bootstrap-servers: "localhost:9092"
+      bootstrap-servers: "127.0.0.1:9092"
       client-id: "neoflex-consumer"
       properties:
         spring.json.trusted.packages: "ru.dolya.dossier.*"
 
-
-
 server:
   port: 8083
 
-
+feign:
+  client:
+    server: http://localhost:8081/deal
 
 
