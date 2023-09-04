@@ -15,8 +15,7 @@ import java.util.concurrent.CompletableFuture;
 @RequiredArgsConstructor
 @Log4j2
 public class KafkaProducerService {
-    @Autowired
-    private KafkaTemplate<String, EmailMessage> kafkaTemplate;
+    private final KafkaTemplate<String, EmailMessage> kafkaTemplate;
 
     public void send(String topic, EmailMessage message) {
         try {
@@ -25,14 +24,14 @@ public class KafkaProducerService {
                     .whenComplete(
                             (result, ex) -> {
                                 if (ex == null) {
-                                    log.info("Message :{} was sent.", message);
+                                    log.info("Send email message: {} to topic: {}", message, topic);
 
                                 } else {
-                                    log.error("Message :{} was not sent", message, ex);
+                                    log.error("Message: {} was not sent to topic: {}", message, topic, ex);
                                 }
                             });
         } catch (Exception ex) {
-            log.error("Send error, message: {}", message, ex);
+            log.error("Send error, message: {} was not sent to topic: {}", message, topic, ex);
         }
     }
 }

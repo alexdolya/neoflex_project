@@ -10,6 +10,7 @@ spring:
       ddl-auto: validate
   kafka:
     producer:
+
       bootstrap-servers: "127.0.0.1:9092"
       client-id: "neoflex-producer"
   liquibase:
@@ -21,5 +22,14 @@ server:
 feign:
   client:
     server: http://localhost:8080/conveyor
+
+kafka:
+  topic1: "finish-registration"
+  topic2: "create-documents"
+  topic3: "send-documents"
+  topic4: "send-ses"
+  topic5: "credit-issued"
+  topic6: "application-denied"
+
 
 

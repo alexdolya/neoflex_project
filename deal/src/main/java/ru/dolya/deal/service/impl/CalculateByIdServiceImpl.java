@@ -2,12 +2,14 @@ package ru.dolya.deal.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.dolya.deal.client.CreditConveyorApi;
 import ru.dolya.deal.exception.FeignClientCustomException;
 import ru.dolya.deal.mapper.EmploymentMapper;
 import ru.dolya.deal.mapper.ScoringDataMapper;
+import ru.dolya.deal.mapper.StatusHistoryMapper;
 import ru.dolya.deal.model.domain.*;
 import ru.dolya.deal.model.domain.enums.ApplicationStatus;
 import ru.dolya.deal.model.domain.enums.ChangeType;
@@ -29,6 +31,10 @@ public class CalculateByIdServiceImpl implements CalculateByIdService {
     private final EmploymentMapper employmentMapper;
     private final ScoringDataMapper scoringDataMapper;
     private final KafkaProducerService kafkaProducerService;
+    private final StatusHistoryMapper statusHistoryMapper;
+
+    @Value(value = "${kafka.topic2}")
+    private String createDocumentsTopic;
 
 
     @Transactional
@@ -56,12 +62,8 @@ public class CalculateByIdServiceImpl implements CalculateByIdService {
                 creditDTO.getPsk(),
                 creditDTO.getMonthlyPayment());
 
-        List<StatusHistory> statusHistoryList = application.getStatusHistory();
-        statusHistoryList.add(StatusHistory.builder()
-                .changeType(ChangeType.AUTOMATIC)
-                .status(ApplicationStatus.CC_APPROVED)
-                .time(LocalDateTime.now())
-                .build());
+        List<StatusHistory> statusHistoryList = statusHistoryMapper
+                .updateStatusHistory(application.getStatusHistory(), ApplicationStatus.CC_APPROVED);
 
         application.getCredit().setAmount(creditDTO.getAmount());
         application.getCredit().setTerm(creditDTO.getTerm());
@@ -91,8 +93,6 @@ public class CalculateByIdServiceImpl implements CalculateByIdService {
 
         applicationRepository.save(application);
 
-        kafkaProducerService.send("create-documents", emailMessage);
-        log.info("Send email message : {} to create-documents topic", emailMessage);
-
+        kafkaProducerService.send(createDocumentsTopic, emailMessage);
     }
 }

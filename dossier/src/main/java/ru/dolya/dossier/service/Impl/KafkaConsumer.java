@@ -18,17 +18,17 @@ public class KafkaConsumer {
     private final DealApi dealApi;
     private final EmailService emailService;
 
-    @KafkaListener(topics = "finish-registration", groupId = "neoflex-group")
+    @KafkaListener(topics = "${kafka.topic1}", groupId = "neoflex-group")
     public void consumeEmailMessageFromFinishRegistration(EmailMessage emailMessage) {
         emailService.sendMessage(emailMessage);
     }
 
-    @KafkaListener(topics = "create-documents", groupId = "neoflex-group")
+    @KafkaListener(topics = "${kafka.topic2}", groupId = "neoflex-group")
     public void consumeEmailMessageFromCreateDocuments(EmailMessage emailMessage) {
         emailService.sendMessage(emailMessage);
     }
 
-    @KafkaListener(topics = "send-documents", groupId = "neoflex-group")
+    @KafkaListener(topics = "${kafka.topic3}", groupId = "neoflex-group")
     public void consumeEmailMessageFromSendDocuments(EmailMessage emailMessage) {
         try {
             dealApi.status(emailMessage.getApplicationId());
@@ -38,17 +38,17 @@ public class KafkaConsumer {
         emailService.sendMessage(emailMessage);
     }
 
-    @KafkaListener(topics = "send-ses", groupId = "neoflex-group")
+    @KafkaListener(topics = "${kafka.topic4}", groupId = "neoflex-group")
     public void consumeEmailMessageFromSendSes(EmailMessage emailMessage) {
         emailService.sendMessage(emailMessage);
     }
 
-    @KafkaListener(topics = "credit-issued", groupId = "neoflex-group")
+    @KafkaListener(topics = "${kafka.topic5}", groupId = "neoflex-group")
     public void consumeEmailMessageFromCreditIssued(EmailMessage emailMessage) {
         emailService.sendMessage(emailMessage);
     }
 
-    @KafkaListener(topics = "application-denied", groupId = "neoflex-group")
+    @KafkaListener(topics = "${kafka.topic6}", groupId = "neoflex-group")
     public void consumeEmailMessageFromApplicationDenied(EmailMessage emailMessage) {
         emailService.sendMessage(emailMessage);
     }

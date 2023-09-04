@@ -1,6 +1,7 @@
 package ru.dolya.deal.config;
 
 
+import lombok.Getter;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -18,10 +19,30 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
+@Getter
 public class KafkaProducerConfig {
 
     @Value(value = "${spring.kafka.producer.bootstrap-servers}")
     private String bootstrapAddress;
+
+    @Value(value = "${kafka.topic1}")
+    private String finishRegistrationTopic;
+
+    @Value(value = "${kafka.topic2}")
+    private String createDocumentsTopic;
+
+    @Value(value = "${kafka.topic3}")
+    private String sendDocumentsTopic;
+
+    @Value(value = "${kafka.topic4}")
+    private String sendSesTopic;
+
+    @Value(value = "${kafka.topic5}")
+    private String creditIssuedTopic;
+
+    @Value(value = "${kafka.topic6}")
+    private String applicationDeniedTopic;
+
     @Bean
     public ProducerFactory<String, EmailMessage> producerFactory() {
         Map<String, Object> configProps = new HashMap<>();
@@ -44,31 +65,31 @@ public class KafkaProducerConfig {
 
     @Bean
     public NewTopic topicFinishRegistration() {
-        return new NewTopic("finish-registration", 1, (short) 1);
+        return new NewTopic(finishRegistrationTopic, 1, (short) 1);
     }
 
     @Bean
     public NewTopic topicCreateDocuments() {
-        return new NewTopic("create-documents", 1, (short) 1);
+        return new NewTopic(createDocumentsTopic, 1, (short) 1);
     }
 
     @Bean
     public NewTopic topicSendDocuments() {
-        return new NewTopic("send-documents", 1, (short) 1);
+        return new NewTopic(sendDocumentsTopic, 1, (short) 1);
     }
 
     @Bean
     public NewTopic topicSendSes() {
-        return new NewTopic("send-ses", 1, (short) 1);
+        return new NewTopic(sendSesTopic, 1, (short) 1);
     }
 
     @Bean
     public NewTopic topicCreditIssued() {
-        return new NewTopic("credit-issued", 1, (short) 1);
+        return new NewTopic(creditIssuedTopic, 1, (short) 1);
     }
 
     @Bean
     public NewTopic topicApplicationDenied() {
-        return new NewTopic("application-denied", 1, (short) 1);
+        return new NewTopic(applicationDeniedTopic, 1, (short) 1);
     }
 }

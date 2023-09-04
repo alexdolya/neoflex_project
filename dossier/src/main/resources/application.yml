@@ -2,12 +2,12 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: example@gmail.com
-    password: "example"
+    username: a90@gmail.com
+    password: "a"
     properties.mail.smtp:
       auth: true
       starttls.enable: true
-    test-connection: true
+#    test-connection: true
   kafka:
     consumer:
       group-id: "neoflex-group"
@@ -23,4 +23,10 @@ feign:
   client:
     server: http://localhost:8081/deal
 
-
+kafka:
+  topic1: "finish-registration"
+  topic2: "create-documents"
+  topic3: "send-documents"
+  topic4: "send-ses"
+  topic5: "credit-issued"
+  topic6: "application-denied"
