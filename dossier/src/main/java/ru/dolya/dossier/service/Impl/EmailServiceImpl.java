@@ -29,7 +29,7 @@ public class EmailServiceImpl implements EmailService {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("${spring.mail.username}");
         message.setTo(emailMessage.getAddress());
-        message.setSubject(letterContentService.getStringThemeByEmailMessage(emailMessage));
+        message.setSubject(emailMessage.getTheme().getMessage());
         if (emailMessage.getTheme().equals(Theme.SEND_SES)) {
             int randomNumber = getRandomSes();
             try {

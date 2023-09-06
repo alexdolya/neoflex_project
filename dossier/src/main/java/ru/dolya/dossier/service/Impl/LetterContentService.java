@@ -6,26 +6,7 @@ import ru.dolya.dossier.dto.EmailMessage;
 @Service
 public class LetterContentService {
 
-    public String getStringThemeByEmailMessage(EmailMessage emailMessage) {
-        switch (emailMessage.getTheme()) {
-            case FINISH_REGISTRATION:
-                return "Finish registration";
-            case CREATE_DOCUMENT:
-                return "Create documents";
-            case SEND_DOCUMENTS:
-                return "Your loan documents";
-            case SEND_SES:
-                return "SES code";
-            case CREDIT_ISSUED:
-                return "Credit issued";
-            case APPLICATION_DENIED:
-                return "Application denied";
-            default:
-                return "None theme";
-        }
-    }
-
-    public String getMailBodyByEmailMessage(EmailMessage emailMessage){
+    public String getMailBodyByEmailMessage(EmailMessage emailMessage) {
         switch (emailMessage.getTheme()) {
             case FINISH_REGISTRATION:
                 return "Finish registration. Proceed \"deal/calculate/{applicationId}\" to calculate offer.";
