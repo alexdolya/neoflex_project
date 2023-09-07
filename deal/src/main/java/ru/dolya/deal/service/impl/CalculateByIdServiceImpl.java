@@ -12,14 +12,10 @@ import ru.dolya.deal.mapper.ScoringDataMapper;
 import ru.dolya.deal.mapper.StatusHistoryMapper;
 import ru.dolya.deal.model.domain.*;
 import ru.dolya.deal.model.domain.enums.ApplicationStatus;
-import ru.dolya.deal.model.domain.enums.ChangeType;
 import ru.dolya.deal.model.domain.enums.CreditStatus;
 import ru.dolya.deal.model.dto.*;
 import ru.dolya.deal.repository.ApplicationRepository;
 import ru.dolya.deal.service.CalculateByIdService;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 @Log4j2
@@ -33,7 +29,7 @@ public class CalculateByIdServiceImpl implements CalculateByIdService {
     private final KafkaProducerService kafkaProducerService;
     private final StatusHistoryMapper statusHistoryMapper;
 
-    @Value(value = "${kafka.topic2}")
+    @Value(value = "${kafka.create-documents}")
     private String createDocumentsTopic;
 
 
@@ -62,9 +58,6 @@ public class CalculateByIdServiceImpl implements CalculateByIdService {
                 creditDTO.getPsk(),
                 creditDTO.getMonthlyPayment());
 
-        List<StatusHistory> statusHistoryList = statusHistoryMapper
-                .updateStatusHistory(application.getStatusHistory(), ApplicationStatus.CC_APPROVED);
-
         application.getCredit().setAmount(creditDTO.getAmount());
         application.getCredit().setTerm(creditDTO.getTerm());
         application.getCredit().setMonthlyPayment(creditDTO.getMonthlyPayment());
@@ -82,17 +75,16 @@ public class CalculateByIdServiceImpl implements CalculateByIdService {
         application.getClient().getPassport().getPassportDTO().setIssueBranch(requestDTO.getPassportIssueBranch());
         application.getClient().getPassport().getPassportDTO().setIssueDate(requestDTO.getPassportIssueDate());
         application.setStatus(ApplicationStatus.CC_APPROVED);
-        application.setStatusHistory(statusHistoryList);
+        application.setStatusHistory(statusHistoryMapper
+                .updateStatusHistory(application.getStatusHistory(), ApplicationStatus.CC_APPROVED));
 
         log.info("Set application status to CC_APPROVED");
 
-        EmailMessage emailMessage = new EmailMessage()
-                .setApplicationId(application.getApplicationId())
-                .setTheme(Theme.CREATE_DOCUMENT)
-                .setAddress(application.getClient().getEmail());
-
         applicationRepository.save(application);
 
-        kafkaProducerService.send(createDocumentsTopic, emailMessage);
+        kafkaProducerService.send(createDocumentsTopic, new EmailMessage()
+                .setApplicationId(application.getApplicationId())
+                .setTheme(Theme.CREATE_DOCUMENT)
+                .setAddress(application.getClient().getEmail()));
     }
 }

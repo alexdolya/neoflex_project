@@ -22,5 +22,4 @@ public class CreditDTO {
     private List<PaymentScheduleElement> paymentSchedule;
 
 
-
 }

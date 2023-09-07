@@ -17,20 +17,17 @@ public class SignServiceImpl implements SignService {
 
     private final ApplicationRepository applicationRepository;
     private final KafkaProducerService kafkaProducerService;
-    @Value(value = "${kafka.topic4}")
+    @Value(value = "${kafka.send-ses}")
     private String sendSesTopic;
-
 
 
     @Override
     public void sign(Long applicationId) {
         Application application = applicationRepository.findById(applicationId).orElseThrow();
 
-        EmailMessage emailMessage = new EmailMessage()
+        kafkaProducerService.send(sendSesTopic, new EmailMessage()
                 .setApplicationId(applicationId)
                 .setAddress(application.getClient().getEmail())
-                .setTheme(Theme.SEND_SES);
-
-        kafkaProducerService.send(sendSesTopic, emailMessage);
+                .setTheme(Theme.SEND_SES));
     }
 }

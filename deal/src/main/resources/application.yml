@@ -24,12 +24,12 @@ feign:
     server: http://localhost:8080/conveyor
 
 kafka:
-  topic1: "finish-registration"
-  topic2: "create-documents"
-  topic3: "send-documents"
-  topic4: "send-ses"
-  topic5: "credit-issued"
-  topic6: "application-denied"
+  finish-registration: "finish-registration"
+  create-documents: "create-documents"
+  send-documents: "send-documents"
+  send-ses: "send-ses"
+  credit-issued: "credit-issued"
+  application-denied: "application-denied"
 
 
 

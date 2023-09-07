@@ -30,7 +30,7 @@ public class OfferServiceImpl implements OfferService {
     private final CreditMapper creditMapper;
     private final KafkaProducerService kafkaProducerService;
 
-    @Value(value = "${kafka.topic1}")
+    @Value(value = "${kafka.finish-registration}")
     private String finishRegistrationTopic;
 
     @Transactional
@@ -65,15 +65,13 @@ public class OfferServiceImpl implements OfferService {
         application.setCredit(credit);
         application.setAppliedOffer(loanOfferDTO);
 
-        EmailMessage emailMessage = new EmailMessage()
-                .setApplicationId(application.getApplicationId())
-                .setAddress(application.getClient().getEmail())
-                .setTheme(Theme.FINISH_REGISTRATION);
-
         applicationRepository.save(application);
         log.info("Save application to database");
 
-        kafkaProducerService.send(finishRegistrationTopic, emailMessage);
+        kafkaProducerService.send(finishRegistrationTopic, new EmailMessage()
+                .setApplicationId(application.getApplicationId())
+                .setAddress(application.getClient().getEmail())
+                .setTheme(Theme.FINISH_REGISTRATION));
     }
 }
 

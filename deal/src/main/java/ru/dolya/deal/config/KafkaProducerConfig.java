@@ -25,22 +25,22 @@ public class KafkaProducerConfig {
     @Value(value = "${spring.kafka.producer.bootstrap-servers}")
     private String bootstrapAddress;
 
-    @Value(value = "${kafka.topic1}")
+    @Value(value = "${kafka.finish-registration}")
     private String finishRegistrationTopic;
 
-    @Value(value = "${kafka.topic2}")
+    @Value(value = "${kafka.create-documents}")
     private String createDocumentsTopic;
 
-    @Value(value = "${kafka.topic3}")
+    @Value(value = "${kafka.send-documents}")
     private String sendDocumentsTopic;
 
-    @Value(value = "${kafka.topic4}")
+    @Value(value = "${kafka.send-ses}")
     private String sendSesTopic;
 
-    @Value(value = "${kafka.topic5}")
+    @Value(value = "${kafka.credit-issued}")
     private String creditIssuedTopic;
 
-    @Value(value = "${kafka.topic6}")
+    @Value(value = "${kafka.application-denied}")
     private String applicationDeniedTopic;
 
     @Bean
