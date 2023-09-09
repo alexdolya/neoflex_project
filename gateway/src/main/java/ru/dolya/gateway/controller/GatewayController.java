@@ -2,6 +2,7 @@ package ru.dolya.gateway.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.dolya.gateway.client.ApplicationApi;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@Log4j2
 public class GatewayController {
     private final ApplicationApi applicationApi;
     private final DealApi dealApi;
@@ -23,7 +25,8 @@ public class GatewayController {
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/application")
     public List<LoanOfferDTO> createLoanApplication(@RequestBody LoanApplicationRequestDTO requestDTO) {
-        try{
+        log.info("Request to \"/application\" with LoanApplicationRequestDTO: {}", requestDTO);
+        try {
             return applicationApi.postOffersRequest(requestDTO);
         } catch (Exception ex) {
             throw new FeignClientCustomException(new Throwable(ex.getMessage()));
@@ -34,7 +37,8 @@ public class GatewayController {
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/application/apply")
     public void applyOffer(@RequestBody LoanOfferDTO loanOfferDTO) {
-        try{
+        log.info("Request to \"/application/apply\" with LoanOfferDTO: {}", loanOfferDTO);
+        try {
             applicationApi.putOffer(loanOfferDTO);
         } catch (Exception ex) {
             throw new FeignClientCustomException(new Throwable(ex.getMessage()));
@@ -45,7 +49,8 @@ public class GatewayController {
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/application/registration/{applicationId}")
     public void finishRegistration(@PathVariable Long applicationId, @RequestBody FinishRegistrationRequestDTO requestDTO) {
-        try{
+        log.info("Request to \"/application/registration/{}\" with FinishRegistrationRequestDTO: {}", applicationId, requestDTO);
+        try {
             dealApi.calculateById(applicationId, requestDTO);
         } catch (Exception ex) {
             throw new FeignClientCustomException(new Throwable(ex.getMessage()));
@@ -56,7 +61,8 @@ public class GatewayController {
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/document/{applicationId}")
     public void createDocuments(@PathVariable Long applicationId) {
-        try{
+        log.info("Request to \"/document/{}\".", applicationId);
+        try {
             dealApi.send(applicationId);
         } catch (Exception ex) {
             throw new FeignClientCustomException(new Throwable(ex.getMessage()));
@@ -67,7 +73,8 @@ public class GatewayController {
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/document/{applicationId}/sign")
     public void signDocuments(@PathVariable Long applicationId) {
-        try{
+        log.info("Request to \"/document/{}/sign\".", applicationId);
+        try {
             dealApi.sign(applicationId);
         } catch (Exception ex) {
             throw new FeignClientCustomException(new Throwable(ex.getMessage()));
@@ -78,7 +85,8 @@ public class GatewayController {
     @ResponseStatus(HttpStatus.OK)
     @PostMapping("/document/{applicationId}/code")
     public void verifySes(@PathVariable Long applicationId, @RequestBody Integer sesCode) {
-        try{
+        log.info("Request to \"/document/{}/code\". SES code: {}", applicationId, sesCode);
+        try {
             dealApi.verifySes(applicationId, sesCode);
         } catch (Exception ex) {
             throw new FeignClientCustomException(new Throwable(ex.getMessage()));

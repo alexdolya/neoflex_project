@@ -21,7 +21,7 @@ server:
 
 feign:
   client:
-    server: http://localhost:8080/conveyor
+    server: http://localhost:8082/conveyor
 
 kafka:
   finish-registration: "finish-registration"
