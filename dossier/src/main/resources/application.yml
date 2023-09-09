@@ -17,7 +17,7 @@ spring:
         spring.json.trusted.packages: "ru.dolya.dossier.*"
 
 server:
-  port: 8083
+  port: 8084
 
 feign:
   client:

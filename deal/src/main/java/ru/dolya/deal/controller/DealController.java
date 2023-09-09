@@ -4,9 +4,11 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import ru.dolya.deal.model.domain.Application;
 import ru.dolya.deal.model.dto.FinishRegistrationRequestDTO;
 import ru.dolya.deal.model.dto.LoanApplicationRequestDTO;
 import ru.dolya.deal.model.dto.LoanOfferDTO;
+import ru.dolya.deal.repository.ApplicationRepository;
 import ru.dolya.deal.service.*;
 
 import java.util.List;
@@ -16,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DealController {
     private final ApplicationService applicationService;
+    private final ApplicationRepository applicationRepository;
     private final OfferService offerService;
     private final CalculateByIdService calculateByIdService;
     private final SendService sendService;
@@ -58,6 +61,13 @@ public class DealController {
         sesService.verifySes(applicationId, sesCode);
     }
 
+    @Operation(summary = "Request to sign documents")
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/document/{applicationId}/sign")
+    public void sign(@PathVariable Long applicationId) {
+        signService.sign(applicationId);
+    }
+
     @Operation(summary = "Set application status to DOCUMENT_CREATED")
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/admin/application/{applicationId}/status")
@@ -72,12 +82,18 @@ public class DealController {
         sesService.setSes(applicationId, ses);
     }
 
-    @Operation(summary = "Request to sign documents")
+    @Operation(summary = "Get application by Id")
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping("/document/{applicationId}/sign")
-    public void sign(@PathVariable Long applicationId) {
-        signService.sign(applicationId);
+    @GetMapping("/admin/application/{applicationId}")
+    public Application getApplication(@PathVariable Long applicationId) {
+        return applicationRepository.findById(applicationId).orElseThrow();
     }
 
+    @Operation(summary = "Get all applications")
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/admin/application")
+    public Iterable<Application> getAllApplications() {
+        return applicationRepository.findAll();
+    }
 }
 
