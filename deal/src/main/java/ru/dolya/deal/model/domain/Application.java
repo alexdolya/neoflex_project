@@ -14,7 +14,6 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Data
@@ -53,7 +52,7 @@ public class Application {
     private LocalDateTime signDate;
 
     @Column(name = "ses_code")
-    private UUID sesCode;
+    private Integer sesCode;
 
     @Column(name = "status_history")
     @Type(type = "jsonb")

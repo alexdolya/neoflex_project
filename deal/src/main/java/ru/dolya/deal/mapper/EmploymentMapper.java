@@ -1,6 +1,5 @@
 package ru.dolya.deal.mapper;
 
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 import ru.dolya.deal.model.domain.Employment;
 import ru.dolya.deal.model.dto.EmploymentDTO;

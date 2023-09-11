@@ -5,6 +5,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -29,7 +31,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = ConveyorApplication.class)
@@ -72,7 +74,7 @@ class CreditServiceTest {
                 .isSalaryClient(false)
                 .build();
 
-        LocalDate date = LocalDate.now();
+        LocalDate date = LocalDate.of(2023,8,1);
 
         paymentSchedule = new ArrayList<>();
         paymentSchedule.add(PaymentScheduleElement.builder()
@@ -133,8 +135,11 @@ class CreditServiceTest {
         when(creditParametersCalculationService.calculatePaymentSchedule(any(), any(), any(), anyInt())).thenReturn(paymentSchedule);
         when(creditParametersCalculationService.calculateTotalAmountFromPaymentSchedule(any())).thenReturn(BigDecimal.valueOf(102204.75));
 
-        CreditDTO creditDTOActual = creditService.getCredit(scoringDataDTO);
 
+        MockedStatic<LocalDate> guid1 = mockStatic(LocalDate.class, Mockito.CALLS_REAL_METHODS);
+        LocalDate fixedDate = LocalDate.of(2023, 8, 1);
+        when(LocalDate.now()).thenReturn(fixedDate);
+        CreditDTO creditDTOActual = creditService.getCredit(scoringDataDTO);
         assertEquals(creditDTOExpected, creditDTOActual);
     }
 }

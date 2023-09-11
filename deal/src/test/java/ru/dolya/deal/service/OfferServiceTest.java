@@ -51,7 +51,7 @@ class OfferServiceTest {
                 .build();
 
 
-        when(applicationRepository.findById(any())).thenReturn(Optional.ofNullable(Application.builder().build()));
+        when(applicationRepository.findById(any())).thenReturn(Optional.ofNullable(Application.builder().client(Client.builder().email("example@mail.ru").build()).build()));
         when(creditMapper.getCreditFromRequestDTO(loanOfferDTO)).thenReturn(Credit.builder().build());
         when(applicationRepository.save(any())).thenAnswer(i -> i.getArguments()[0]);
 

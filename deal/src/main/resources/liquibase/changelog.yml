@@ -150,7 +150,7 @@ databaseChangeLog:
                   type: timestamp
               - column:
                   name: ses_code
-                  type: uuid
+                  type: integer
               - column:
                   name: status_history
                   type: jsonb

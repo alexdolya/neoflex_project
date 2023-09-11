@@ -2,6 +2,7 @@ package ru.dolya.deal.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.dolya.deal.mapper.CreditMapper;
@@ -10,7 +11,9 @@ import ru.dolya.deal.model.domain.Credit;
 import ru.dolya.deal.model.domain.StatusHistory;
 import ru.dolya.deal.model.domain.enums.ApplicationStatus;
 import ru.dolya.deal.model.domain.enums.ChangeType;
+import ru.dolya.deal.model.dto.EmailMessage;
 import ru.dolya.deal.model.dto.LoanOfferDTO;
+import ru.dolya.deal.model.dto.Theme;
 import ru.dolya.deal.repository.ApplicationRepository;
 import ru.dolya.deal.service.OfferService;
 
@@ -25,6 +28,10 @@ public class OfferServiceImpl implements OfferService {
 
     private final ApplicationRepository applicationRepository;
     private final CreditMapper creditMapper;
+    private final KafkaProducerService kafkaProducerService;
+
+    @Value(value = "${kafka.finish-registration}")
+    private String finishRegistrationTopic;
 
     @Transactional
     @Override
@@ -42,6 +49,7 @@ public class OfferServiceImpl implements OfferService {
             statusHistory = new ArrayList<>();
         }
 
+
         statusHistory.add(StatusHistory.builder()
                 .changeType(ChangeType.AUTOMATIC)
                 .status(ApplicationStatus.APPROVED)
@@ -58,9 +66,12 @@ public class OfferServiceImpl implements OfferService {
         application.setAppliedOffer(loanOfferDTO);
 
         applicationRepository.save(application);
-
         log.info("Save application to database");
 
+        kafkaProducerService.send(finishRegistrationTopic, new EmailMessage()
+                .setApplicationId(application.getApplicationId())
+                .setAddress(application.getClient().getEmail())
+                .setTheme(Theme.FINISH_REGISTRATION));
     }
 }
 

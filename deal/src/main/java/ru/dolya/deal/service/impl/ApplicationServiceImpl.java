@@ -21,7 +21,6 @@ import ru.dolya.deal.service.ApplicationService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Log4j2
@@ -51,7 +50,6 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         Application application = Application.builder()
                 .client(client)
-                .sesCode(UUID.randomUUID())
                 .creationDate(LocalDate.now())
                 .status(ApplicationStatus.PREAPPROVAL)
                 .statusHistory(List.of(StatusHistory.builder()
@@ -66,7 +64,6 @@ public class ApplicationServiceImpl implements ApplicationService {
         Long appID = applicationRepository.save(application).getApplicationId();
 
         log.info("Save to database with ID: {}", appID);
-
 
         List<LoanOfferDTO> loanOfferDTOList;
 

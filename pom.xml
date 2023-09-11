@@ -4,6 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
     <modules>
+        <module>dossier</module>
         <module>application</module>
         <module>deal</module>
         <module>conveyor</module>
@@ -25,8 +26,6 @@
     <properties>
         <java.version>11</java.version>
     </properties>
-
-
 
 
 </project>

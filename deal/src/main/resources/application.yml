@@ -8,7 +8,11 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: validate
+  kafka:
+    producer:
 
+      bootstrap-servers: "127.0.0.1:9092"
+      client-id: "neoflex-producer"
   liquibase:
     change-log: liquibase/changelog.yml
 
@@ -18,5 +22,14 @@ server:
 feign:
   client:
     server: http://localhost:8080/conveyor
+
+kafka:
+  finish-registration: "finish-registration"
+  create-documents: "create-documents"
+  send-documents: "send-documents"
+  send-ses: "send-ses"
+  credit-issued: "credit-issued"
+  application-denied: "application-denied"
+
 
 

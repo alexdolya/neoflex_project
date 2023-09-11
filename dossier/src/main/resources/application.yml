@@ -1,0 +1,32 @@
+spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: a@gmail.com
+    password: "a"
+    properties.mail.smtp:
+      auth: true
+      starttls.enable: true
+#    test-connection: true
+  kafka:
+    consumer:
+      group-id: "neoflex-group"
+      bootstrap-servers: "127.0.0.1:9092"
+      client-id: "neoflex-consumer"
+      properties:
+        spring.json.trusted.packages: "ru.dolya.dossier.*"
+
+server:
+  port: 8083
+
+feign:
+  client:
+    server: http://localhost:8081/deal
+
+kafka:
+  finish-registration: "finish-registration"
+  create-documents: "create-documents"
+  send-documents: "send-documents"
+  send-ses: "send-ses"
+  credit-issued: "credit-issued"
+  application-denied: "application-denied"

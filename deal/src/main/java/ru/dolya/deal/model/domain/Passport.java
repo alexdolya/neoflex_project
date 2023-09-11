@@ -1,7 +1,6 @@
 package ru.dolya.deal.model.domain;
 
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
