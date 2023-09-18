@@ -3,5 +3,5 @@ server:
 
 feign:
   client:
-    application: http://localhost:8081/application
-    deal: http://localhost:8083/deal
+    application: http://application:8081/application
+    deal: http://deal:8083/deal
