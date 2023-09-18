@@ -1,0 +1,7 @@
+server:
+  port: 8080
+
+feign:
+  client:
+    application: http://localhost:8081/application
+    deal: http://localhost:8083/deal

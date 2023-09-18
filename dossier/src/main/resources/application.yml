@@ -17,11 +17,11 @@ spring:
         spring.json.trusted.packages: "ru.dolya.dossier.*"
 
 server:
-  port: 8083
+  port: 8084
 
 feign:
   client:
-    server: http://localhost:8081/deal
+    server: http://localhost:8083/deal
 
 kafka:
   finish-registration: "finish-registration"

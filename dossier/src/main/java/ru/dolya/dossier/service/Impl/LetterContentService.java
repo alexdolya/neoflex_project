@@ -9,7 +9,7 @@ public class LetterContentService {
     public String getMailBodyByEmailMessage(EmailMessage emailMessage) {
         switch (emailMessage.getTheme()) {
             case FINISH_REGISTRATION:
-                return "Finish registration. Proceed \"deal/calculate/{applicationId}\" to calculate offer.";
+                return "Finish registration. Go to next step to calculate offer.";
             case CREATE_DOCUMENT:
                 return "Please prepare your documents for credit";
             case SEND_DOCUMENTS:

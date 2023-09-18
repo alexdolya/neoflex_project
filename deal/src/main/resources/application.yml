@@ -17,11 +17,11 @@ spring:
     change-log: liquibase/changelog.yml
 
 server:
-  port: 8081
+  port: 8083
 
 feign:
   client:
-    server: http://localhost:8080/conveyor
+    server: http://localhost:8082/conveyor
 
 kafka:
   finish-registration: "finish-registration"
