@@ -10,7 +10,7 @@ spring:
       ddl-auto: validate
   kafka:
     producer:
-      bootstrap-servers: "broker:9092"
+      bootstrap-servers: "localhost:9092"
       client-id: "neoflex-producer"
   liquibase:
     change-log: liquibase/changelog.yml
@@ -21,7 +21,7 @@ server:
 
 feign:
   client:
-    server: http://conveyor:8082/conveyor
+    server: http://localhost:8082/conveyor
 
 kafka:
   finish-registration: "finish-registration"

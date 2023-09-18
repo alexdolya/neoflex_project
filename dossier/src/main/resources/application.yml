@@ -2,16 +2,16 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: alexdolya90@gmail.com
-    password: "eeuatuakmbmrjfqt"
+    username: a@gmail.com
+    password: "a"
     properties.mail.smtp:
       auth: true
       starttls.enable: true
 #    test-connection: true
   kafka:
     consumer:
+      bootstrap-servers: "localhost:9092"
       group-id: "neoflex-group"
-      bootstrap-servers: "broker:9092"
       client-id: "neoflex-consumer"
       properties:
         spring.json.trusted.packages: "ru.dolya.dossier.*"
@@ -21,7 +21,7 @@ server:
 
 feign:
   client:
-    server: http://deal:8083/deal
+    server: http://localhost:8083/deal
 
 kafka:
   finish-registration: "finish-registration"
