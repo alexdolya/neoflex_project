@@ -1,11 +1,88 @@
 version: "3.9"
 services:
+
+  application:
+    build: /application
+    container_name: application
+    ports:
+      - "8081:8081"
+    networks:
+      - default
+    environment:
+      FEIGN_CLIENT_SERVER: http://deal:8083/deal
+
+  conveyor:
+    build: /conveyor
+    container_name: conveyor
+    ports:
+      - "8082:8082"
+    networks:
+      - default
+
+  deal:
+    build: /deal
+    container_name: deal
+    ports:
+      - "8083:8083"
+    environment:
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: 'broker:9092'
+      FEIGN_CLIENT_SERVER: http://conveyor:8082/conveyor
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/dealDB
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    depends_on:
+      - db
+      - broker
+    networks:
+      - default
+
+  dossier:
+    build: /dossier
+    container_name: dossier
+    ports:
+      - "8084:8084"
+    environment:
+      FEIGN_CLIENT_SERVER: http://deal:8083/deal
+      SPRING_KAFKA_CONSUMER_BOOTSTRAP_SERVERS: 'broker:9092'
+    depends_on:
+      - broker
+    networks:
+      - default
+
+  gateway:
+    build: /gateway
+    container_name: gateway
+    ports:
+      - "8080:8080"
+    environment:
+      FEIGN_CLIENT_APPLICATION: http://application:8081/application
+      FEIGN_CLIENT_DEAL: http://deal:8083/deal
+    networks:
+      - default
+
+  db:
+    image: postgres:16
+    restart: always
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: dealDB
+    ports:
+      - "5432:5432"
+    volumes:
+      - .:/var/lib/postgresql
+    networks:
+      - default
+
   zookeeper:
     image: confluentinc/cp-zookeeper:6.2.0
     container_name: zookeeper
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - default
 
   broker:
     image: confluentinc/cp-kafka:7.0.0
@@ -18,7 +95,12 @@ services:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://broker:29092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:9092,PLAINTEXT_INTERNAL://broker:29092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+    networks:
+        - default
+
+networks:
+  default: null

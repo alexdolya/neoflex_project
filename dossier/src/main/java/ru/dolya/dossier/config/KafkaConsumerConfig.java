@@ -2,6 +2,7 @@ package ru.dolya.dossier.config;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.EnableKafka;
@@ -24,6 +25,8 @@ import static org.springframework.kafka.support.serializer.JsonDeserializer.TYPE
 @EnableKafka
 public class KafkaConsumerConfig {
 
+    @Value(value = "${spring.kafka.consumer.bootstrap-servers}")
+    private String bootstrapAddress;
 
     @Bean
     KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, EmailMessage>>
@@ -45,7 +48,7 @@ public class KafkaConsumerConfig {
     @Bean
     public Map<String, Object> consumerConfigs() {
         Map<String, Object> props = new HashMap<>();
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "127.0.0.1:9092");
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
         props.put(ConsumerConfig.GROUP_ID_CONFIG, "neoflex-group");
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);

@@ -10,8 +10,8 @@ spring:
 #    test-connection: true
   kafka:
     consumer:
+      bootstrap-servers: "localhost:9092"
       group-id: "neoflex-group"
-      bootstrap-servers: "127.0.0.1:9092"
       client-id: "neoflex-consumer"
       properties:
         spring.json.trusted.packages: "ru.dolya.dossier.*"
